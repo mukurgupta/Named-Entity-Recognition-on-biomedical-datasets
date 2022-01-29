@@ -1,5 +1,3 @@
-from distutils.log import set_verbosity
-from tabnanny import verbose
 import pandas as pd
 import numpy as np
 import torch
@@ -115,9 +113,13 @@ def prepare_dataset():
     df_test = convert_df(df_test)
     return df_train, df_test
 
-def train_model(df_train, df_test, model, epochs=5, batch_size=8, base_dir='./', max_len=256):
+def train_model(df_train, df_test, model, epochs=5, batch_size=8, base_dir='./', max_len=256, model_type = 'bert'):
 
-    tokenizer = AutoTokenizer.from_pretrained(model,use_fast=True)
+    if model_type == 'roberta':
+        tokenizer = AutoTokenizer.from_pretrained(model,use_fast=True, add_prefix_space=True)
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(model,use_fast=True)
+        
     train_dataset = dataset(df_train, tokenizer, max_len)
     eval_dataset = dataset(df_test, tokenizer, max_len)
 
@@ -129,7 +131,7 @@ def train_model(df_train, df_test, model, epochs=5, batch_size=8, base_dir='./',
         logging_dir = f'{base_dir}/logs/',            
         evaluation_strategy = 'epoch',
         save_strategy="no",
-        disable_tqdm= False,
+        disable_tqdm= True,
     )
 
     config = AutoConfig.from_pretrained(
@@ -152,6 +154,7 @@ def train_model(df_train, df_test, model, epochs=5, batch_size=8, base_dir='./',
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='NER on BioMedical Datasets')
     parser.add_argument('-m', '--model', default='bert-base-uncased', type = str)
+    parser.add_argument('-t', '--model_type', default='bert', type = str)
     parser.add_argument('-e', '--epochs', default=5, type=int)
     parser.add_argument('-b', '--batch_size', default=8, type=int)
     parser.add_argument('-l', '--max_len', default=256, type=int)
@@ -165,4 +168,4 @@ if __name__ == "__main__":
 
     df_train, df_test = prepare_dataset()
     
-    train_model(df_train, df_test, args.model, args.epochs, args.batch_size, args.base_dir, args.max_len)
+    train_model(df_train, df_test, args.model, args.epochs, args.batch_size, args.base_dir, args.max_len, args.model_type)
