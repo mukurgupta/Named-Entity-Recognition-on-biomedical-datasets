@@ -1,9 +1,19 @@
 # NER on biomedical datasets
 
-Add preprocessed datasets in CoNLL format in ./DDI
+Biomedical NER data converted to [CoNLL format](http://ufal.mff.cuni.cz/conll2009-st/task-description.html) are placed in datasets directory. NER experiments are performed on 5 biomedical datasets: Drug-Drug Interaction Dataset, JLPBA, BC5CDR, NCBI-Disease and, Anatomy Entity Mention Dataset.
 
-Train the model by running bioNER.py
+## How to run the Code 
 
-Example:
-For training biobert: 
-python bioNER.py -m 'dmis-lab/biobert-base-cased-v1.1' -e 3 -b 8 -l 256
+- Preprocess the uploaded the dataset files to break the text examples considering the max token length used for the transformer model. Change the "dataset" variable in preprocess.sh and run:
+
+    ``` 
+    cd Named-Entity-Recognition-on-biomedical-datasets
+    bash preprocess.sh
+    ```
+
+- Train the model by running bioNER.py.
+  For example, for training biobert with JNLPBA dataset, run:
+
+    ``` 
+    python bioNER.py -m 'dmis-lab/biobert-base-cased-v1.1' -e 4 -b 8 -l 128 -x 'jlpba'
+    ```
