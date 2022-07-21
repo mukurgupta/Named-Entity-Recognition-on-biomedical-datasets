@@ -17,3 +17,13 @@ Biomedical NER data converted to [CoNLL format](http://ufal.mff.cuni.cz/conll200
     ``` 
     python bioNER.py -m 'dmis-lab/biobert-base-cased-v1.1' -e 4 -b 8 -l 128 -x 'jlpba'
     ```
+
+## NER Experiments
+
+| Model/Dataset   | DDI   | JNLPBA | BC5CDR | NCBI Disease | AnatEM |
+| --------------- | ----- | ------ | ------ | ------------ | ------ |
+| BERT            | 84.43 | 72.43  | 87.26  | 76.39        | 78.79  |
+| BioBERT         | 88.09 | 73.55  | 90.13  | 80.69        | 82.87  |
+| PubMedBERT      | 87.4  | 74.5   | 90.9   | 83.1         | 83.74  |
+| BioMed\_Roberta | 87.92 | 74.63  | 90.05  | 80.93        | 82.05  |
+| RoBERTa         | 86.87 | 74.84  | 88.43  | 79.45        | 79.35  |
